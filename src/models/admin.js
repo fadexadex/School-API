@@ -35,8 +35,6 @@ export async function dropStudent(payload) {
     }
   } catch (error) {
     throw error;
-  } finally {
-    await client.end();
   }
 }
 
@@ -61,8 +59,6 @@ export async function createCourse(payload) {
   } catch (err) {
     console.error(err.message);
     throw err;
-  } finally {
-    await client.end();
   }
 }
 
@@ -87,8 +83,6 @@ export async function deleteCourse(payload) {
   } catch (err) {
     console.error(err.message);
     throw err;
-  } finally {
-    await client.end();
   }
 }
 
@@ -111,8 +105,6 @@ export async function getAdmin(payLoad) {
   } catch (err) {
     console.error(err.message);
     throw err;
-  } finally {
-    await client.end();
   }
 }
 
@@ -135,8 +127,6 @@ export async function getTeacher(payLoad) {
   } catch (err) {
     console.error(err.message);
     throw err;
-  } finally {
-    await client.end();
   }
 }
 
@@ -148,11 +138,11 @@ export async function getTeacher(payLoad) {
 //Create course
 // dropStudent(payLoader);
 
-const payLoader = {
-  role: "admin",
-  code: "MATHS159",
-  unit: 2,
-  teacher_username: "joladeola",
-};
+// const payLoader = {
+//   role: "admin",
+//   code: "MATHS159",
+//   unit: 2,
+//   teacher_username: "joladeola",
+// };
 
-createCourse(payLoader);
+// createCourse(payLoader);

@@ -26,8 +26,6 @@ export async function getStudentOfferingACourse(payLoad) {
   } catch (err) {
     console.error(err.message);
     throw err;
-  } finally {
-    await client.end();
   }
 }
 
@@ -57,8 +55,6 @@ export async function getLecturerInACourse(payLoad) {
   } catch (err) {
     console.error(err.message);
     throw err;
-  } finally {
-    await client.end();
   }
 }
 
@@ -88,16 +84,14 @@ export async function dropStudentFromCourse(payLoad) {
   } catch (err) {
     console.error(err.message);
     throw err;
-  } finally {
-    await client.end();
   }
 }
 
-const payloader = {
-  role: "teacher",
-  course_code: "CMP207",
-  student_username: "kolawole",
-};
+// const payloader = {
+//   role: "teacher",
+//   course_code: "CMP207",
+//   student_username: "kolawole",
+// };
 
 // getStudentOfferingACourse(payloader);
 // getLecturerInACourse(payloader);

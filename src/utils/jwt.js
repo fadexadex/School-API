@@ -1,11 +1,13 @@
 import jwt from "jsonwebtoken";
+import { config } from "../config/env.js";
 
-const secretKey = "secret";
-function generateToken(payload) {
-  const generatedToken = jwt.sign(payload, secretKey, { expiresIn: "1h" });
+export async function generateToken(payload) {
+  const generatedToken = jwt.sign(payload, config.ACCESS_TOKEN, {
+    expiresIn: "1h",
+  });
   return generatedToken;
 }
 
-function verifyToken(generatedToken) {
-  jwt.verify(generatedToken, secretKey);
+export async function verifyToken(generatedToken) {
+  return jwt.verify(generatedToken, config.ACCESS_TOKEN);
 }

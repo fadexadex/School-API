@@ -1,11 +1,11 @@
 import express from "express";
 const adminRoute = express.Router();
 
-import { dropAStudent } from "../controllers/admin";
-import { createACourse } from "../controllers/admin";
-import { deleteACourse } from "../controllers/admin";
-import { getTheAdmins } from "../controllers/admin";
-import { getTheTeachers } from "../controllers/admin";
+import { dropAStudent } from "../controllers/admin.js";
+import { createACourse } from "../controllers/admin.js";
+import { deleteACourse } from "../controllers/admin.js";
+import { getTheAdmins } from "../controllers/admin.js";
+import { getTheTeachers } from "../controllers/admin.js";
 
 adminRoute.delete("/delete-student", dropAStudent);
 adminRoute.post("/create-course", createACourse);

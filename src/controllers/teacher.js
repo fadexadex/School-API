@@ -1,6 +1,6 @@
-import { getStudentOfferingACourse } from "../models/teacher";
-import { getLecturerInACourse } from "../models/teacher";
-import { dropStudentFromCourse } from "../models/teacher";
+import { getStudentOfferingACourse } from "../models/teacher.js";
+import { getLecturerInACourse } from "../models/teacher.js";
+import { dropStudentFromCourse } from "../models/teacher.js";
 
 export async function getTheStudentOfferingACourse(req, res) {
   try {

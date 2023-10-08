@@ -26,8 +26,6 @@ export async function enrollInCourse(payLoad) {
   } catch (err) {
     console.error(err.message);
     throw err;
-  } finally {
-    await client.end();
   }
 }
 
@@ -52,8 +50,6 @@ export async function dropCourse(payLoad) {
   } catch (err) {
     console.error(err.message);
     throw err;
-  } finally {
-    await client.end();
   }
 }
 
@@ -83,8 +79,6 @@ export async function getStudentsAcrossCourse(payLoad) {
   } catch (err) {
     console.error(err.message);
     throw err;
-  } finally {
-    await client.end();
   }
 }
 
@@ -107,8 +101,6 @@ export async function getAllCourses(payLoad) {
   } catch (err) {
     console.error(err.message);
     throw err;
-  } finally {
-    await client.end();
   }
 }
 
@@ -138,19 +130,17 @@ export async function getCoursesEnrolledFor(payLoad) {
   } catch (err) {
     console.error(err.message);
     throw err;
-  } finally {
-    await client.end();
   }
 }
 
-const payloader = {
-  role: "student",
-  course_code: "CMP207",
-  student_username: "kolawole",
-};
+// const payloader = {
+//   role: "student",
+//   course_code: "CMP207",
+//   student_username: "kolawole",
+// };
 
-enrollInCourse(payloader);
-// dropCourse(payloader);
+// enrollInCourse(payloader);
+// // dropCourse(payloader);
 // getStudentsAcrossCourse(payloader);
 // getAllCourses(payloader);
 // getCoursesEnrolledFor(payloader);

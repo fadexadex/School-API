@@ -1,8 +1,8 @@
-import { enrollInCourse } from "../models/student";
-import { dropCourse } from "../models/student";
-import { getStudentsAcrossCourse } from "../models/student";
-import { getAllCourses } from "../models/student";
-import { getCoursesEnrolledFor } from "../models/student";
+import { enrollInCourse } from "../models/student.js";
+import { dropCourse } from "../models/student.js";
+import { getStudentsAcrossCourse } from "../models/student.js";
+import { getAllCourses } from "../models/student.js";
+import { getCoursesEnrolledFor } from "../models/student.js";
 
 export async function enrollInACourse(req, res) {
   try {

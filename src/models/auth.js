@@ -1,5 +1,12 @@
 //Database Interactions
 import client from "../config/db.js";
+import { hashPassword, passwordMatches } from "../utils/hash.js";
+import { generateToken } from "../utils/jwt.js";
+import { sendMail } from "../utils/mail.sender.js";
+import { config } from "../config/env.js";
+import { registerSchema } from "../validation/register_schema.js";
+import { loginSchema } from "../validation/register_schema.js";
+import { resetSchema } from "../validation/register_schema.js";
 
 //Function to check if username already exists in database
 export async function checkIfUserExists(username, role) {
@@ -15,7 +22,12 @@ export async function checkIfUserExists(username, role) {
 
 //Function to register new users
 export async function register(payload) {
-  const { username, password, role } = payload;
+  const { error, value } = registerSchema.validate(payload);
+  if (error) {
+    return false;
+  }
+
+  const { username, password, role } = value;
 
   try {
     const userExists = await checkIfUserExists(username, role);
@@ -23,12 +35,13 @@ export async function register(payload) {
       console.log("I exist");
       return false;
     } else {
+      const hashedPassword = await hashPassword(password);
       const query = `
             INSERT INTO ${role} (username, password)
             VALUES($1, $2)
             RETURNING *
             `;
-      const values = [username, password];
+      const values = [username, hashedPassword];
       const result = await client.query(query, values);
       console.log(result.rows);
       return result.rows;
@@ -36,47 +49,90 @@ export async function register(payload) {
   } catch (err) {
     console.error(err.message);
     throw err;
-  } finally {
-    await client.end();
   }
 }
 
 //Function to log existing users
 export async function login(payload) {
-  const { username, password, role } = payload;
+  const { error, value } = loginSchema.validate(payload);
+  if (error) {
+    return false;
+  }
+
+  const { username, password, role } = value;
   try {
-    const query = `
-            SELECT *
+    const userExists = await checkIfUserExists(username, role);
+    if (!userExists) {
+      return false;
+    } else {
+      // const hashedPassword = await hashPassword(password);
+      const query = `
+            SELECT password
             FROM ${role}
-            WHERE username = $1 AND password = $2
+            WHERE username = $1 
             `;
-    const values = [username, password];
-    const result = await client.query(query, values);
-    return result.rows;
+      const values = [username];
+      const result = await client.query(query, values);
+      const user = result.rows[0];
+      const isMatch = await passwordMatches(password, user.password);
+      console.log(isMatch);
+      if (!isMatch) {
+        return false;
+      } else {
+        const token = await generateToken(user);
+        return token;
+      }
+    }
   } catch (err) {
     console.log(err.message);
-  } finally {
-    await client.end();
   }
 }
 
+export const sendResetLink = async (payload) => {
+  const { error, value } = resetSchema.validate(payload);
+  if (error) {
+    return false;
+  }
+
+  const { username, role } = value;
+
+  const userExists = await checkIfUserExists(username, role);
+
+  if (!userExists) {
+    return false;
+  } else {
+    try {
+      const response = sendMail(username, config.SENDER_EMAIL);
+      return response;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+};
+
 export async function reset(payload) {
-  const { username, role, old_password, new_password } = payload;
-  try {
-    const query = `
-            UPDATE ${role}
-            SET password = $1
-            WHERE username = $2 AND password = $3
-            RETURNING *
-            `;
-    const values = [new_password, username, old_password];
-    const result = await client.query(query, values);
-    return result.rows;
-  } catch (err) {
-    console.error(err.message);
-    throw err;
-  } finally {
-    await client.end();
+  const { username, role, new_password } = payload;
+
+  const userExists = await checkIfUserExists(username, role);
+
+  if (!userExists) {
+    return false;
+  } else {
+    try {
+      const query = `
+              UPDATE ${role}
+              SET password = $1
+              WHERE username = $2 
+              RETURNING *
+              `;
+      const values = [new_password, username];
+      const result = await client.query(query, values);
+      return result.rows;
+    } catch (err) {
+      console.error(err.message);
+      throw err;
+    }
   }
 }
 

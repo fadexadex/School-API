@@ -1,15 +1,16 @@
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 
 // async function hashPassword(password) {
 //   let genPassword = await bcrypt.genSalt(5);
 //   return genPassword;
 // }
 
-const password = process.env.PASSWORD;
+// const password = process.env.PASSWORD;
 
-const hasher = (password, saltRounds, err, hash) => {
-  bcrypt.hash(password, saltRounds, function (err, hash) {});
+export const hashPassword = (password) => {
+  return bcrypt.hash(password, 5);
 };
 
-let result = hashPassword("ADEJUMO");
-console.log(result);
+export const passwordMatches = async (password, userpassword) => {
+  return await bcrypt.compare(password, userpassword);
+};

@@ -1,8 +1,8 @@
-import { dropStudent } from "../models/admin";
-import { createCourse } from "../models/admin";
-import { deleteCourse } from "../models/admin";
-import { getAdmin } from "../models/admin";
-import { getTeacher } from "../models/admin";
+import { dropStudent } from "../models/admin.js";
+import { createCourse } from "../models/admin.js";
+import { deleteCourse } from "../models/admin.js";
+import { getAdmin } from "../models/admin.js";
+import { getTeacher } from "../models/admin.js";
 
 export async function dropAStudent(req, res) {
   try {

@@ -1,15 +1,13 @@
-//jjk
-// import { Client } from "pg";
 import pg from "pg";
-
+import { config } from "./env.js";
 const { Client } = pg;
 
 const client = new Client({
-  host: "localhost",
-  port: 5432,
-  database: "school",
-  user: "postgres",
-  password: "196976",
+  host: config.DB_HOST,
+  port: config.DB_PORT,
+  database: config.DB_NAME,
+  user: config.DB_USER,
+  password: config.DB_PASSWORD,
 });
 
 client.connect((err) => {
